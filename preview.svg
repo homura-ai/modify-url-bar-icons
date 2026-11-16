@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="220" viewBox="0 0 640 220" role="img" aria-labelledby="title desc">
+  <title id="title">Modify URL Bar Icons</title>
+  <desc id="desc">Move the bookmark star from the URL bar into a toolbar using Customize Toolbar.</desc>
+  <rect width="640" height="220" rx="16" fill="#202027"/>
+  <g font-family="sans-serif" fill="#f4f4f5">
+    <text x="32" y="44" font-size="24">Modify URL Bar Icons</text>
+    <text x="32" y="76" font-size="16">Your browser icons, wherever you want them.</text>
+    <rect x="32" y="104" width="54" height="84" rx="12" fill="#3e3e4a"/>
+    <rect x="106" y="104" width="502" height="42" rx="12" fill="#3e3e4a"/>
+    <text x="126" y="131" font-size="16">URL bar</text>
+    <path d="m59 117 4 9 10 1-8 7 3 10-9-5-9 5 3-10-8-7 10-1z" fill="#f6d88a"/>
+    <path d="M520 130v38H91m0 0 10-7m-10 7 10 7" fill="none" stroke="#f6d88a" stroke-width="3"/>
+    <text x="160" y="196" font-size="14">Drag and drop in Customize Toolbar</text>
+  </g>
+</svg>

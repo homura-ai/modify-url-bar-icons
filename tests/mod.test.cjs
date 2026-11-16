@@ -246,6 +246,18 @@ function browser(cui, { os = 'Linux', prefs = {}, extension = false } = {}) {
 
 const ids = (node) => node.children.map((child) => child.id || child.className);
 
+test('Sine metadata uses full repository URLs and ships its linked assets', () => {
+  const theme = JSON.parse(fs.readFileSync(path.join(root, 'theme.json')));
+  const repo = 'https://github.com/homura-ai/modify-url-bar-icons';
+  assert.equal(theme.homepage, repo);
+  for (const [field, file] of [['readme', 'README.md'], ['image', 'preview.svg']]) {
+    assert.equal(theme[field], `${repo}/raw/refs/heads/main/${file}`);
+    assert.ok(fs.existsSync(path.join(root, file)), file);
+  }
+  assert.ok(Date.parse(theme.updatedAt) > Date.parse('2026-09-21'));
+  assert.notEqual(theme.version, '1.0.0');
+});
+
 test('registers a widget for each icon available on this platform, plus extension page actions', () => {
   const cui = new FakeCustomizableUI();
   browser(cui, { extension: true });

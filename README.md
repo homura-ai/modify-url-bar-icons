@@ -30,8 +30,8 @@ Placements are stored by Firefox's customization state, so they survive restarts
 
 ## Install with Sine
 
-1. Put this project's files in a GitHub repository.
-2. In Zen's **Settings → Sine Mods**, enter that repository's URL in the custom GitHub repository installer.
+1. In Zen's **Settings → Sine Mods**, open the custom GitHub repository installer.
+2. Enter `https://github.com/homura-ai/modify-url-bar-icons`.
 3. Allow JavaScript from unofficial sources in Sine if required (`sine.allow-unsafe-js`).
 4. Right-click a toolbar, choose **Customize Toolbar…**, and drag the URL bar icons where you want them.
 
@@ -39,16 +39,18 @@ This folder is the complete mod source; it has no build step or dependencies.
 
 ## Implementation and compatibility
 
-`modify-url-bar-icons.uc.js` registers a `CustomizableUI` widget (`type: "custom"`) per icon. The widget node is an empty `toolbaritem` slot. When a slot is placed in an area, the real icon element is moved into it and a hidden placeholder is left where it came from; removing the slot moves the icon back to the placeholder. `BrowserPageActions._getNextNode` is wrapped so Firefox inserts new extension page actions before the placeholder instead of a node that is no longer in the bar. Click handling for these icons is delegated from `#navigator-toolbox`, which is why they keep working in every toolbar.
+`modify-url-bar-icons.uc.js` registers a `CustomizableUI` widget (`type: "custom"`) per icon. The widget node is an empty `toolbaritem` slot. When a slot is placed in an area, the real icon element is moved into it and a hidden placeholder is left where it came from; removing the slot moves the icon back to the placeholder. `BrowserPageActions._getNextNode` is wrapped so Firefox inserts new extension page actions before the placeholder instead of a node that is no longer in the bar. Zen 1.24.2b delegates browser icon clicks from `#browser`, which contains the customizable toolbars; Zen's copy URL button keeps its own click listener.
 
 Widget registrations are global while Sine runs the script per window, so the window that registered them hands them over to another open window when it closes; the last window removes them and Firefox keeps the placements for next time.
 
 `chrome.css` sizes moved icons like toolbar buttons, collapses slots whose icon Firefox has hidden, shows a stand-in icon while customizing, and lifts the Zen rules that hide icons inside the URL bar.
 
-Verified against Zen `dev` (Firefox 156) and [Sine's loader](https://github.com/CosmoCreeper/Sine/tree/main/src). Because this touches browser internals (`CustomizableUI`, `BrowserPageActions`, the URL bar markup), future Zen or Firefox changes may require an update. Automated checks use a browser-API mock; a real Zen/Sine session still needs a smoke test.
+Verified on Linux with Zen **1.24.2b** (Firefox 160) and Sine **2.3.4.1c** on 2026-11-16, using a headless copy of the installed profile. All ten default Linux icons were dragged through Customize Toolbar into the sidebar top, sidebar foot and navigation bar, then back to the palette; each returned to its original position. The moved bookmark star also reached the browser's delegated click handler. Drag events used Firefox's `browser.uiCustomization.skipSourceNodeCheck` testing preference in the copied profile. Platform-specific and pref-gated icons were checked in the installed markup, but their feature behavior was not exercised.
+
+Because this touches browser internals (`CustomizableUI`, `BrowserPageActions`, the URL bar markup), future Zen or Firefox changes may require an update. Automated tests cover relocation, restoration, extension page actions, multiple windows and unload with a browser-API mock.
 
 ## Verify
 
-Run `node --test tests/*.test.cjs`.
+Run `node --test --test-concurrency=1 tests/mod.test.cjs`.
 
 In Zen, open Customize Toolbar, drag the bookmark star into the sidebar top buttons, then check: it toggles bookmarks, survives a restart, follows a second window, returns to the URL bar when dragged back to the palette, and disabling the mod puts every icon back.
