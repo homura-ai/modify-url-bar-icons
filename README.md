@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Modify URL Bar Icons is now part of [Homuzen](https://github.com/homura-ai/homuzen), and this repository is no longer updated. To switch, install `https://github.com/homura-ai/homuzen` in Sine, remove this mod, and turn on **Enable Modify URL Bar Icons** in Homuzen's settings. Your settings carry over.
+
 # Modify URL Bar Icons
 
 A Sine mod for Zen Browser that lets you move the icons inside the URL bar to any toolbar, using the browser's own **Customize Toolbar** drag and drop.
